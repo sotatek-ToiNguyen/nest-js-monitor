@@ -6,7 +6,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt-strategy';
 import { RolesGuard } from './role/roles.guard';
 @Module({
-  imports: [UserModule,
+  imports: [
+    UserModule,
     JwtModule.register({
       global: true,
       secret: 'hello nest js',
@@ -15,6 +16,5 @@ import { RolesGuard } from './role/roles.guard';
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
-
 })
 export class AuthModule {}

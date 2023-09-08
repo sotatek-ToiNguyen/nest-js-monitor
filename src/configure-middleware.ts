@@ -7,7 +7,10 @@ import * as bodyParser from 'body-parser';
 import { ResponseInterceptor } from './response';
 import { Reflector } from '@nestjs/core';
 
-export const configureAppMiddleware = (app: NestExpressApplication, configService: ConfigService): void => {
+export const configureAppMiddleware = (
+  app: NestExpressApplication,
+  configService: ConfigService,
+): void => {
   app.useLogger(app.get(Logger));
   app.useGlobalPipes(
     new ValidationPipe({
@@ -19,12 +22,14 @@ export const configureAppMiddleware = (app: NestExpressApplication, configServic
 
   app.set('trust proxy', 1);
   app.disable('x-powered-by');
-  app.enableCors({ methods: [ 'GET', 'POST', 'PUT', 'PATCH', 'DELETE' ] });
+  app.enableCors({ methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] });
 
   app.use(helmet());
   // app.use(compression());
   app.use(bodyParser.json({ limit: '50mb' }));
 
-  app.useGlobalInterceptors(new ResponseInterceptor(), new ClassSerializerInterceptor(
-    app.get(Reflector)));
+  app.useGlobalInterceptors(
+    new ResponseInterceptor(),
+    new ClassSerializerInterceptor(app.get(Reflector)),
+  );
 };
